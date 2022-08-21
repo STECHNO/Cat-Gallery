@@ -1,111 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, StyleSheet, Image, View, FlatList} from 'react-native';
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const App = ({navigator}) => {
+  const [imagesArr, setImagesArr] = useState([]);
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  async function callCatImages() {
+    let bucket = [];
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    try {
+      let response = await fetch(
+        'https://api.thecatapi.com/v1/images/search?limit=10&page=10&order=Desc',
+      );
+      let data = await response.json();
+      data.map((value, index) => {
+        bucket.push(value.url);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    setImagesArr(bucket);
+  }
+
+  useEffect(() => {
+    callCatImages();
+  }, []);
+
+  const GridView = ({name}) => (
+    <View style={styles.gridStyle}>
+      <Image style={styles.stretch} source={{uri: name}} />
     </View>
   );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={imagesArr}
+        renderItem={({item}) => <GridView name={item} />}
+        keyExtractor={item => item}
+        numColumns={2}
+        key={item => item}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  MainContainer: {
+    flex: 1,
+    backgroundColor: 'white',
   },
-  sectionTitle: {
+
+  gridStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 130,
+    margin: 5,
+  },
+
+  gridText: {
     fontSize: 24,
-    fontWeight: '600',
+    color: 'white',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  stretch: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
 
