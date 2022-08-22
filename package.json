@@ -14,7 +14,9 @@
     "react": "18.0.0",
     "react-native": "0.69.4",
     "react-native-dropdown-picker": "^5.4.2",
-    "react-native-lightbox": "^0.8.1"
+    "react-native-dropdown-select-list": "^1.0.18",
+    "react-native-lightbox": "^0.8.1",
+    "react-native-lightbox-v2": "^0.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
