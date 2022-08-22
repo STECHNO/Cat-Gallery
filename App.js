@@ -56,7 +56,6 @@ const App = () => {
         `https://api.thecatapi.com/v1/images/search?breed_ids=${item}`,
       );
       let filteredBreed = await response.json();
-      console.log(filteredBreed);
       filteredBreed.map((c, index) => {
         bucket.push(c.url);
       });
@@ -140,11 +139,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 130,
     margin: 5,
-  },
-
-  gridText: {
-    fontSize: 24,
-    color: 'white',
   },
   stretch: {
     width: '100%',
