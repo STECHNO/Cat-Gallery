@@ -37,7 +37,7 @@ const App = () => {
     let bucket = [];
     try {
       let response = await fetch(
-        'https://api.thecatapi.com/v1/images/search?limit=50&&order=Desc',
+        'https://api.thecatapi.com/v1/images/search?limit=10',
       );
       let allCats = await response.json();
       allCats.map((b, index) => {
