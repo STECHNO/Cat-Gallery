@@ -53,7 +53,7 @@ const App = () => {
     let bucket = [];
     try {
       let response = await fetch(
-        `https://api.thecatapi.com/v1/images/search?breed_ids=${item}`,
+        `https://api.thecatapi.com/v1/images/search?limit=10&order=Random&breed_ids=${item}`,
       );
       let filteredBreed = await response.json();
       filteredBreed.map((c, index) => {
@@ -107,7 +107,7 @@ const App = () => {
         />
       </View>
       {selected !== '' ? (
-        <View style={{flex: 7, alignItems: 'center', marginTop: 50}}>
+        <View style={{flex: 1, alignItems: 'center', marginTop: 50}}>
           <Button
             title="Back To Home"
             onPress={() => {
